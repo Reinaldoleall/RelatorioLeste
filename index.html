@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conferência de Obrigações Acessórias Mensais</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container, .filter-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .status-pendente {
+            color: red;
+            font-weight: bold;
+        }
+
+        .status-enviado {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Conferência de Obrigações Acessórias Mensais</h1>
+
+        <div class="form-container">
+            <h2>Cadastro de Obrigações</h2>
+            <label for="new-company">Empresa:</label>
+            <input type="text" id="new-company">
+
+            <label for="new-obligation">Obrigação:</label>
+            <input type="text" id="new-obligation">
+
+            <label for="new-date">Data de Envio:</label>
+            <input type="date" id="new-date">
+
+            <label for="new-deadline">Prazo de Envio:</label>
+            <input type="date" id="new-deadline">
+
+            <label for="new-status">Status:</label>
+            <select id="new-status">
+                <option value="Enviado">Enviado</option>
+                <option value="Pendente">Pendente</option>
+            </select>
+
+            <button onclick="addObligation()">Adicionar</button>
+        </div>
+
+        <div class="filter-container">
+            <h2>Filtros</h2>
+            <label for="company">Empresa:</label>
+            <select id="company" onchange="filterTable()">
+                <option value="all">Todas</option>
+            </select>
+
+            <label for="start-date">Data de Envio Inicial:</label>
+            <input type="date" id="start-date" onchange="filterTable()">
+
+            <label for="end-date">Data de Envio Final:</label>
+            <input type="date" id="end-date" onchange="filterTable()">
+
+            <label for="filter-status">Status:</label>
+            <select id="filter-status" onchange="filterTable()">
+                <option value="all">Todos</option>
+                <option value="Enviado">Enviado</option>
+                <option value="Pendente">Pendente</option>
+            </select>
+        </div>
+
+        <table id="obligations-table">
+            <thead>
+                <tr>
+                    <th>Obrigações</th>
+                    <th>Empresa</th>
+                    <th>Data de Envio</th>
+                    <th>Prazo de Envio</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Conteúdo da tabela será inserido aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let obligations = [];
+
+        // Carrega os dados do localStorage ao carregar a página
+        window.onload = function() {
+            if (localStorage.getItem('obligations')) {
+                obligations = JSON.parse(localStorage.getItem('obligations'));
+                updateTable();
+                updateCompanyFilter();
+            }
+        };
+
+        function addObligation() {
+            const company = document.getElementById('new-company').value.trim();
+            const obligation = document.getElementById('new-obligation').value.trim();
+            const date = document.getElementById('new-date').value;
+            const deadline = document.getElementById('new-deadline').value;
+            const status = document.getElementById('new-status').value;
+
+            if (company && obligation && date && status && deadline) {
+                obligations.push({ company, obligation, date, deadline, status });
+                updateTable();
+                updateCompanyFilter();
+                saveData(); // Salva os dados no localStorage
+                clearForm();
+                if (status === 'Pendente') {
+                    addReminder(deadline, obligation, company);
+                }
+            } else {
+                alert("Todos os campos são obrigatórios!");
+            }
+        }
+
+        function updateTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            obligations.forEach(ob => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${ob.obligation}</td>
+                    <td>${ob.company}</td>
+                    <td>${ob.date}</td>
+                    <td>${ob.deadline}</td>
+                    <td class="${ob.status === 'Pendente' ? 'status-pendente' : 'status-enviado'}">${ob.status}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateCompanyFilter() {
+            const companyFilter = document.getElementById('company');
+            const companies = [...new Set(obligations.map(ob => ob.company))];
+
+            companyFilter.innerHTML = '<option value="all">Todas</option>';
+            companies.forEach(company => {
+                const option = document.createElement('option');
+                option.value = company;
+                option.textContent = company;
+                companyFilter.appendChild(option);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('new-company').value = '';
+            document.getElementById('new-obligation').value = '';
+            document.getElementById('new-date').value = '';
+            document.getElementById('new-deadline').value = '';
+            document.getElementById('new-status').value = 'Enviado';
+        }
+
+        function filterTable() {
+            const company = document.getElementById('company').value;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            const status = document.getElementById('filter-status').value;
+
+            const filteredObligations = obligations.filter(ob => {
+                if (company !== 'all' && ob.company !== company) return false;
+                if (startDate && ob.date < startDate) return false;
+                if (endDate && ob.date > endDate) return false;
+                if (status !== 'all' && ob.status !== status) return false;
+                return true;
+            });
+
+            // Atualiza a tabela com as obrigações filtradas
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            filteredObligations.forEach(ob => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${ob.obligation}</td>
+                    <td>${ob.company}</td>
+                    <td>${ob.date}</td>
+                    <td>${ob.deadline}</td>
+                    <td class="${ob.status === 'Pendente' ? 'status-pendente' : 'status-enviado'}">${ob.status}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function saveData() {
+            localStorage.setItem('obligations', JSON.stringify(obligations));
+        }
+
+        function addReminder(deadline, obligation, company) {
+            alert(`Lembrete: ${obligation} da empresa ${company} está pendente com prazo de envio até ${deadline}`);
+        }
+    </script>
+</body>
+</html>
