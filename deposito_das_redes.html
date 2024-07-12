@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEPÓSITO</title>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            background-color: blue; /* Azul claro */
+            color: white;
+            margin: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        }
+        .container {
+            max-width: 90%;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: gray;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DEPÓSITO DA REDE</h1>
+        <div class="section">
+            <label for="rede">Rede:</label>
+            <input type="text" id="rede" value="">
+        </div>
+        <div class="section">
+            <label for="data">Data:</label>
+            <input type="text" id="data" value="">
+        </div>
+        <div class="section">
+            <label for="geladeira">GELADEIRA:</label>
+            <textarea id="geladeira" rows="6">NR-BT41PD1WA - 
+NR-BT41PD1XA - 
+NR-BT43PV1TA - 
+NR-BT50BD3WA - 
+NR-BT50BD3XA - 
+NR-BT55PV2WA - 
+NR-BT55PV2XA - 
+NR-BB41GV    - 
+NR-BB41T     - 
+NR-BB53PV3WA - 
+NR-BB53PV3XA - 
+NR-BB53GV3BA - 
+NR-BB53GV3M  - 
+NR-BB71X     - 
+NR-BB71GV    - </textarea>
+        </div>
+        <div class="section">
+            <label for="mwo">MWO:</label>
+            <textarea id="mwo" rows="6">NN-ST25LWRUN - 
+NN-ST27LWRUN - 
+NN-ST55LMRUN - 
+NN-ST65LWRUN - 
+NN-ST66NBRUN - 
+NN-ST67LSRUN - 
+NN-CD89NBRUN - </textarea>
+        </div>
+        <div class="section">
+            <label for="maquina_lavar">MÁQUINA DE LAVAR:</label>
+            <textarea id="maquina_lavar" rows="6">NA-F120B1WA - 
+NA-F120B1TA - 
+NA-F140B1WA - 
+NA-F160B6W  - 
+NA-F170B7WA - 
+NA-F180P7TA - </textarea>
+        </div>
+        <div class="section">
+            <label for="builtin">Built-in:</label>
+            <input type="text" id="builtin" value="NP-6M2FTKBRP -  ">
+        </div>
+
+        <button onclick="copyToClipboard()">Copiar Relatório</button>
+
+        <textarea id="reportOutput" style="display: none;"></textarea>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const rede = document.getElementById('rede').value;
+            const data = document.getElementById('data').value;
+            const geladeira = document.getElementById('geladeira').value;
+            const mwo = document.getElementById('mwo').value;
+            const maquinaLavar = document.getElementById('maquina_lavar').value;
+            const builtin = document.getElementById('builtin').value;
+
+            const report = `*DEPÓSITO PANASONIC*\n*REDE:* ${rede}\n*DATA:* ${data}\n\n*GELADEIRA*\n${geladeira}\n\n*MWO*\n${mwo}\n\n*MÁQUINA DE LAVAR*\n${maquinaLavar}\n\n*Built-in:*\n${builtin}`;
+
+            const reportOutput = document.getElementById('reportOutput');
+            reportOutput.style.display = 'block';
+            reportOutput.value = report;
+
+            reportOutput.select();
+            document.execCommand('copy');
+            alert('Relatório copiado para a área de transferência!');
+            reportOutput.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

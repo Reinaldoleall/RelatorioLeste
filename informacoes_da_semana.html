@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>informacoes_da_semana</title>
+
+    <style>
+        body {
+            background-color: blue; /* Azul claro */
+            color: white;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background-color: #0288d1; /* Azul */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0288d1; /* Azul mais escuro */
+        }
+
+        button:disabled {
+            background-color: #ccc; /* Cinza claro para botão desabilitado */
+            cursor: not-allowed;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        h2, h3 {
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>informacoes da semana</h2>
+        <form id="reportForm">
+            <label for="revenda">Revenda:</label>
+            <input type="text" id="revenda" name="revenda" value="">
+
+            <label for="filial">Filial:</label>
+            <input type="text" id="filial" name="filial" value="">
+
+            <label for="id">Id:</label>
+            <input type="text" id="id" name="id" value=" ">
+
+            <label for="regional">Regional:</label>
+            <input type="text" id="regional" name="regional" value="Leste">
+
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade" value="Rio de Janeiro RJ">
+
+            <h3>Panasonic</h3>
+            <label for="panasonic1">Produto 1:</label>
+            <input type="text" id="panasonic1" name="panasonic1" value=" - R$">
+
+            <label for="panasonic2">Produto 2:</label>
+            <input type="text" id="panasonic2" name="panasonic2" value=" - R$">
+
+            <h3>Concorrência</h3>
+            <label for="concorrencia1">Produto 1:</label>
+            <input type="text" id="concorrencia1" name="concorrencia1" value=" - R$">
+
+            <label for="concorrencia2">Produto 2:</label>
+            <input type="text" id="concorrencia2" name="concorrencia2" value=" - R$">
+
+            <label for="coordenador">Coordenador:</label>
+            <input type="text" id="coordenador" name="coordenador" value="Vanderson">
+
+            <label for="supervisor">Supervisor:</label>
+            <input type="text" id="supervisor" name="supervisor" value="Stephanie">
+
+            <label for="consultora">Consultora:</label>
+            <input type="text" id="consultora" name="consultora" value=" ">
+
+            <label for="periodo">Período:</label>
+            <input type="text" id="periodo" name="periodo" value=" / /2024">
+
+            <button type="button" onclick="generateReport()">Gerar Relatório</button>
+        </form>
+
+        <textarea id="reportOutput" rows="10" readonly></textarea>
+        <button type="button" onclick="copyReport()">Copiar Relatório</button>
+    </div>
+
+    <script>
+        // Função para gerar relatório
+        function generateReport() {
+            var revenda = document.getElementById("revenda").value;
+            var filial = document.getElementById("filial").value;
+            var id = document.getElementById("id").value;
+            var regional = document.getElementById("regional").value;
+            var cidade = document.getElementById("cidade").value;
+            var panasonic1 = document.getElementById("panasonic1").value;
+            var panasonic2 = document.getElementById("panasonic2").value;
+            var concorrencia1 = document.getElementById("concorrencia1").value;
+            var concorrencia2 = document.getElementById("concorrencia2").value;
+            var coordenador = document.getElementById("coordenador").value;
+            var supervisor = document.getElementById("supervisor").value;
+            var consultora = document.getElementById("consultora").value;
+            var periodo = document.getElementById("periodo").value;
+
+            var reportText = `Relatório da Semana:\n\n`;
+            reportText += `Revenda: ${revenda}\n`;
+            reportText += `Filial: ${filial}\n`;
+            reportText += `ID: ${id}\n`;
+            reportText += `Regional: ${regional}\n`;
+            reportText += `Cidade: ${cidade}\n\n`;
+
+            reportText += `Panasonic:\n`;
+            reportText += `Produto 1: ${panasonic1}\n`;
+            reportText += `Produto 2: ${panasonic2}\n\n`;
+
+            reportText += `Concorrência:\n`;
+            reportText += `Produto 1: ${concorrencia1}\n`;
+            reportText += `Produto 2: ${concorrencia2}\n\n`;
+
+            reportText += `Coordenador: ${coordenador}\n`;
+            reportText += `Supervisor: ${supervisor}\n`;
+            reportText += `Consultora: ${consultora}\n`;
+            reportText += `Período: ${periodo}`;
+
+            document.getElementById("reportOutput").value = reportText;
+        }
+
+        // Função para copiar o relatório
+        function copyReport() {
+            var reportText = document.getElementById("reportOutput");
+            reportText.select();
+            reportText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            document.execCommand("copy");
+            alert("Relatório copiado para a área de transferência!");
+        }
+    </script>
+</body>
+</html>
