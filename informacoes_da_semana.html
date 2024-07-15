@@ -91,6 +91,7 @@
         <h2>Relatório Gerado:</h2>
         <div id="generatedReport" class="generated-report"></div>
         <button onclick="copyReport()">Copiar Relatório</button>
+        <button onclick="shareReport()">Compartilhar Relatório</button>
     </div>
 
     <script>
@@ -146,6 +147,20 @@
             document.execCommand('copy');
             document.body.removeChild(textarea);
             alert('Relatório copiado para a área de transferência!');
+        }
+
+        function shareReport() {
+            const reportText = document.getElementById('generatedReport').textContent;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Relatório da Semana',
+                    text: reportText
+                })
+                .then(() => console.log('Relatório compartilhado com sucesso'))
+                .catch(err => console.error('Erro ao compartilhar relatório:', err));
+            } else {
+                alert('A funcionalidade de compartilhamento não é suportada neste navegador.');
+            }
         }
     </script>
 
