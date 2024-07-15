@@ -179,11 +179,10 @@
 
         function shareReport() {
             const reportText = document.getElementById('generatedReport').innerText || '';
-            const files = [];
-
             const fileInput = document.getElementById('fotos');
             const fileList = fileInput.files;
 
+            const files = [];
             if (fileList.length > 0) {
                 for (let i = 0; i < Math.min(fileList.length, 6); i++) {
                     const file = fileList[i];
@@ -191,16 +190,29 @@
                 }
             }
 
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Relatório da Semana',
-                    text: reportText,
-                    files: files
-                })
-                .then(() => console.log('Relatório compartilhado com sucesso'))
-                .catch((error) => console.error('Erro ao compartilhar relatório', error));
-            } else {
-                alert('A funcionalidade de compartilhamento não é suportada neste navegador.');
+            // Remove as imagens do relatório
+            const reportDiv = document.createElement('div');
+            reportDiv.innerHTML = reportText;
+
+            const generatedReport = document.getElementById('generatedReport');
+            generatedReport.innerHTML = '';
+            generatedReport.appendChild(reportDiv);
+
+            // Adiciona as imagens ao final do relatório
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '100%';
+                        img.style.height = 'auto';
+                        img.style.marginTop = '10px';
+                        generatedReport.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                }
             }
         }
     </script>
