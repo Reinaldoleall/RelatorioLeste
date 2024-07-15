@@ -84,17 +84,8 @@
         <input type="text" id="concorrencia2" placeholder="Digite o nome do produto">
         <input type="text" id="concorrencia2-preco" placeholder="Digite o valor do produto">
 
-        <label for="panasonic-img1">Foto do Preço da Panasonic 1:</label>
-        <input type="file" id="panasonic-img1" accept="image/*">
-
-        <label for="panasonic-img2">Foto do Preço da Panasonic 2:</label>
-        <input type="file" id="panasonic-img2" accept="image/*">
-
-        <label for="concorrencia-img1">Foto do Preço da Concorrência 1:</label>
-        <input type="file" id="concorrencia-img1" accept="image/*">
-
-        <label for="concorrencia-img2">Foto do Preço da Concorrência 2:</label>
-        <input type="file" id="concorrencia-img2" accept="image/*">
+        <label for="fotos">Fotos dos Preços:</label>
+        <input type="file" id="fotos" accept="image/*" multiple>
 
         <button onclick="generateReport()">Gerar Relatório</button>
     </div>
@@ -107,53 +98,10 @@
     </div>
 
     <script>
-        let panasonicImg1Data = '';
-        let panasonicImg2Data = '';
-        let concorrenciaImg1Data = '';
-        let concorrenciaImg2Data = '';
+        let imageFiles = [];
 
-        document.getElementById('panasonic-img1').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    panasonicImg1Data = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('panasonic-img2').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    panasonicImg2Data = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('concorrencia-img1').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    concorrenciaImg1Data = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('concorrencia-img2').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    concorrenciaImg2Data = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
+        document.getElementById('fotos').addEventListener('change', function() {
+            imageFiles = Array.from(this.files);
         });
 
         function generateReport() {
@@ -197,13 +145,20 @@
             `;
 
             let imagesHTML = '';
-            if (panasonicImg1Data) imagesHTML += '<br><strong></strong><br><img src="' + panasonicImg1Data + '" style="max-width: 100%;"><br>';
-            if (panasonicImg2Data) imagesHTML += '<strong></strong><br><img src="' + panasonicImg2Data + '" style="max-width: 100%;"><br>';
-            if (concorrenciaImg1Data) imagesHTML += '<strong></strong><br><img src="' + concorrenciaImg1Data + '" style="max-width: 100%;"><br>';
-            
-            if (concorrenciaImg2Data) imagesHTML += '<strong></strong><br><img src="' + concorrenciaImg2Data + '" style="max-width: 100%;"><br>';
+            imageFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagesHTML += '<br><strong></strong><br><img src="' + e.target.result + '" style="max-width: 100%;"><br>';
+                    if (index === imageFiles.length - 1) {
+                        document.getElementById('generatedReport').innerHTML = report + imagesHTML;
+                    }
+                }
+                reader.readAsDataURL(file);
+            });
 
-            document.getElementById('generatedReport').innerHTML = report + imagesHTML;
+            if (imageFiles.length === 0) {
+                document.getElementById('generatedReport').innerHTML = report;
+            }
         }
 
         function copyReport() {
@@ -219,28 +174,34 @@
 
         function shareReport() {
             const reportText = document.getElementById('generatedReport').innerText;
-            const images = [];
-            if (panasonicImg1Data) images.push(panasonicImg1Data);
-            if (panasonicImg2Data) images.push(panasonicImg2Data);
-            if (concorrenciaImg1Data) images.push(concorrenciaImg1Data);
-            if (concorrenciaImg2Data) images.push(concorrenciaImg2Data);
-
-            if (navigator.share) {
-                const files = images.map((dataUrl, index) => {
-                    const blob = dataURLtoBlob(dataUrl);
-                    return new File([blob], `image${index + 1}.jpg`, { type: blob.type });
+            const images = imageFiles.map(file => {
+                const reader = new FileReader();
+                return new Promise(resolve => {
+                    reader.onload = function(e) {
+                        resolve(e.target.result);
+                    }
+                    reader.readAsDataURL(file);
                 });
+            });
 
-                navigator.share({
-                    title: 'Relatório da Semana',
-                    text: reportText,
-                    files: files
-                })
-                .then(() => console.log('Relatório compartilhado com sucesso'))
-                .catch(err => console.error('Erro ao compartilhar relatório:', err));
-            } else {
-                alert('A funcionalidade de compartilhamento não é suportada neste navegador.');
-            }
+            Promise.all(images).then(dataUrls => {
+                if (navigator.share) {
+                    const files = dataUrls.map((dataUrl, index) => {
+                        const blob = dataURLtoBlob(dataUrl);
+                        return new File([blob], `image${index + 1}.jpg`, { type: blob.type });
+                    });
+
+                    navigator.share({
+                        title: 'Relatório da Semana',
+                        text: reportText,
+                        files: files
+                    })
+                    .then(() => console.log('Relatório compartilhado com sucesso'))
+                    .catch(err => console.error('Erro ao compartilhar relatório:', err));
+                } else {
+                    alert('A funcionalidade de compartilhamento não é suportada neste navegador.');
+                }
+            });
         }
 
         function dataURLtoBlob(dataUrl) {
