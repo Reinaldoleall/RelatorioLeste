@@ -3,70 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Página Inicial</title>
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: Helvetica, Arial, sans-serif;
-            background: url('crc/img/00.png') no-repeat center center fixed;
-            background-size: cover;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
         }
 
-        .header {
-            background-color: rgba(30, 144, 255, 0.8); /* Cor com transparência */
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        .header a {
-            color: white;
+        .container h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .container p {
+            font-size: 1.2rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .container a {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
             text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
+            padding: 12px 30px;
             border-radius: 5px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
             transition: background-color 0.3s;
         }
 
-        .header a:hover {
-            background-color: #4682B4;
-        }
-
-        .content {
-            text-align: center;
-            color: blue;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            font-size: calc(20px + 2vw); /* Responsivo */
+        .container a:hover {
+            background-color: #0056b3;
         }
     </style>
-    <script>
-        function navigateTo(page) {
-            // Redireciona para a página respectiva
-            window.location.href = page;
-        }
-    </script>
 </head>
 <body>
-    <div class="header">
-        <a href="javascript:void(0)" onclick="navigateTo('informacoes_da_semana.html')">Informações da Semana</a>
-        <a href="javascript:void(0)" onclick="navigateTo('deposito_das_redes.html')">Depósito das Redes</a>
-    </div>
-
-    <div class="content">
-        <h2>Bem-vindo!</h2>
-        <p>Clique nas <br>
-        opções acima <br>
-        para iniciar</p>
+    <div class="container">
+        <h1>Bem-vindo!</h1>
+        <p>Clique nos botões abaixo para acessar as informações da semana ou o depósito das redes.</p>
+        <a href="informacoes_da_semana.html">Informações da Semana</a>
+        <a href="deposito_das_redes.html">Depósito das Redes</a>
     </div>
 </body>
 </html>
