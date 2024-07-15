@@ -1,3 +1,5 @@
+"Preencha as informações e clique em 'Gerar Relatório'. Uma vez gerado, clique em 'Copiar' e cole no seu grupo do WhatsApp para enviar."
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -46,11 +48,6 @@
         button:hover {
             background-color: #004494;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
@@ -69,6 +66,12 @@
 
         <label for="consultor">Consultor:</label>
         <input type="text" id="consultor" placeholder="Digite o consultor">
+
+        <label for="regional">Regional:</label>
+        <input type="text" id="regional" placeholder="Digite a regional">
+
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" placeholder="Digite a cidade">
 
         <label for="periodo">Período:</label>
         <input type="text" id="periodo" placeholder="Digite o período">
@@ -89,9 +92,6 @@
         <input type="text" id="concorrencia2" placeholder="Digite o nome do produto">
         <input type="text" id="concorrencia2-preco" placeholder="Digite o valor do produto">
 
-        <label for="fotos">Fotos dos Preços (até 6 fotos):</label>
-        <input type="file" id="fotos" accept="image/*" multiple>
-
         <button onclick="generateReport()">Gerar Relatório</button>
     </div>
 
@@ -99,71 +99,53 @@
         <h2>Relatório Gerado:</h2>
         <div id="generatedReport" class="generated-report"></div>
         <button onclick="copyReport()">Copiar Relatório</button>
-        <button onclick="shareReport()">Compartilhar Relatório</button>
     </div>
 
     <script>
         function generateReport() {
-            const revenda = document.getElementById('revenda').value || 'Não especificado';
-            const filial = document.getElementById('filial').value || 'Não especificado';
-            const id = document.getElementById('id').value || 'Não especificado';
-            const consultor = document.getElementById('consultor').value || 'Não especificado';
-            const periodo = document.getElementById('periodo').value || 'Não especificado';
+            const revenda = document.getElementById('revenda').value || '*Não especificado*';
+            const filial = document.getElementById('filial').value || '*Não especificado*';
+            const id = document.getElementById('id').value || '*Não especificado*';
+            const consultor = document.getElementById('consultor').value || '*Não especificado*';
+            const regional = document.getElementById('regional').value || '*Não especificado*';
+            const cidade = document.getElementById('cidade').value || '*Não especificado*';
+            const periodo = document.getElementById('periodo').value || '*Não especificado*';
 
-            const panasonic1 = document.getElementById('panasonic1').value || 'Não especificado';
-            const panasonic1Preco = document.getElementById('panasonic1-preco').value || '0';
-            const panasonic2 = document.getElementById('panasonic2').value || 'Não especificado';
-            const panasonic2Preco = document.getElementById('panasonic2-preco').value || '0';
+            const panasonic1 = document.getElementById('panasonic1').value || '*Não especificado*';
+            const panasonic1Preco = document.getElementById('panasonic1-preco').value || '*0*';
+            const panasonic2 = document.getElementById('panasonic2').value || '*Não especificado*';
+            const panasonic2Preco = document.getElementById('panasonic2-preco').value || '*0*';
 
-            const concorrencia1 = document.getElementById('concorrencia1').value || 'Não especificado';
-            const concorrencia1Preco = document.getElementById('concorrencia1-preco').value || '0';
-            const concorrencia2 = document.getElementById('concorrencia2').value || 'Não especificado';
-            const concorrencia2Preco = document.getElementById('concorrencia2-preco').value || '0';
+            const concorrencia1 = document.getElementById('concorrencia1').value || '*Não especificado*';
+            const concorrencia1Preco = document.getElementById('concorrencia1-preco').value || '*0*';
+            const concorrencia2 = document.getElementById('concorrencia2').value || '*Não especificado*';
+            const concorrencia2Preco = document.getElementById('concorrencia2-preco').value || '*0*';
 
             const report = `
-<strong>Relatório da Semana:</strong>
+*Relatório da Semana:*
 
-<strong>Revenda:</strong> ${revenda}
-<strong>Filial:</strong> ${filial}
-<strong>ID:</strong> ${id}
-<strong>Regional:</strong> Leste
-<strong>Cidade:</strong> Rio de Janeiro RJ
+*Revenda:* ${revenda}
+*Filial:* ${filial}
+*ID:* ${id}
+*Regional:* ${regional}
+*Cidade:* ${cidade}
 
-<strong>Panasonic:</strong>
+*Panasonic:*
 🔹 ${panasonic1}: - R$${panasonic1Preco}
 🔹 ${panasonic2}: - R$${panasonic2Preco}
 
-<strong>Concorrência:</strong>
+*Concorrência:*
 🔹 ${concorrencia1}: - R$${concorrencia1Preco}
 🔹 ${concorrencia2}: - R$${concorrencia2Preco}
 
-<strong>Coordenador:</strong> Vanderson
-<strong>Supervisor:</strong> Stephanie
-<strong>Consultor:</strong> ${consultor}
-<strong>Período:</strong> ${periodo}
+*Coordenador:* Vanderson
+*Supervisor:* Stephanie
+*Consultor:* ${consultor}
+*Período:* ${periodo}
             `;
 
             const generatedReport = document.getElementById('generatedReport');
             generatedReport.innerHTML = report;
-
-            const fileInput = document.getElementById('fotos');
-            const files = fileInput.files;
-
-            if (files.length > 0) {
-                for (let i = 0; i < Math.min(files.length, 6); i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.maxWidth = '100%';
-                        img.style.height = 'auto';
-                        img.style.marginTop = '10px';
-                        generatedReport.appendChild(img);
-                    }
-                    reader.readAsDataURL(file);
-                }
-            }
         }
 
         function copyReport() {
@@ -175,45 +157,6 @@
             document.execCommand('copy');
             document.body.removeChild(tempTextArea);
             alert('Relatório copiado para a área de transferência!');
-        }
-
-        function shareReport() {
-            const reportText = document.getElementById('generatedReport').innerText || '';
-            const fileInput = document.getElementById('fotos');
-            const fileList = fileInput.files;
-
-            const files = [];
-            if (fileList.length > 0) {
-                for (let i = 0; i < Math.min(fileList.length, 6); i++) {
-                    const file = fileList[i];
-                    files.push(file);
-                }
-            }
-
-            // Remove as imagens do relatório
-            const reportDiv = document.createElement('div');
-            reportDiv.innerHTML = reportText;
-
-            const generatedReport = document.getElementById('generatedReport');
-            generatedReport.innerHTML = '';
-            generatedReport.appendChild(reportDiv);
-
-            // Adiciona as imagens ao final do relatório
-            if (files.length > 0) {
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.maxWidth = '100%';
-                        img.style.height = 'auto';
-                        img.style.marginTop = '10px';
-                        generatedReport.appendChild(img);
-                    }
-                    reader.readAsDataURL(file);
-                }
-            }
         }
     </script>
 </body>
