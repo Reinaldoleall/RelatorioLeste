@@ -197,11 +197,11 @@
             `;
 
             let imagesHTML = '';
-            if (panasonicImg1Data) imagesHTML += '<br><strong>Foto do Preço da Panasonic 1:</strong><br><img src="' + panasonicImg1Data + '" style="max-width: 100%;"><br>';
-            if (panasonicImg2Data) imagesHTML += '<strong>Foto do Preço da Panasonic 2:</strong><br><img src="' + panasonicImg2Data + '" style="max-width: 100%;"><br>';
-            if (concorrenciaImg1Data) imagesHTML += '<strong>Foto do Preço da Concorrência 1:</strong><br><img src="' + concorrenciaImg1Data + '" style="max-width: 100%;"><br>';
+            if (panasonicImg1Data) imagesHTML += '<br><strong></strong><br><img src="' + panasonicImg1Data + '" style="max-width: 100%;"><br>';
+            if (panasonicImg2Data) imagesHTML += '<strong></strong><br><img src="' + panasonicImg2Data + '" style="max-width: 100%;"><br>';
+            if (concorrenciaImg1Data) imagesHTML += '<strong></strong><br><img src="' + concorrenciaImg1Data + '" style="max-width: 100%;"><br>';
             
-            if (concorrenciaImg2Data) imagesHTML += '<strong>Foto do Preço da Concorrência 2:</strong><br><img src="' + concorrenciaImg2Data + '" style="max-width: 100%;"><br>';
+            if (concorrenciaImg2Data) imagesHTML += '<strong></strong><br><img src="' + concorrenciaImg2Data + '" style="max-width: 100%;"><br>';
 
             document.getElementById('generatedReport').innerHTML = report + imagesHTML;
         }
