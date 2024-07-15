@@ -1,5 +1,3 @@
-"Preencha as informações e clique em 'Gerar Relatório'. Uma vez gerado, clique em 'Copiar' e cole no seu grupo do WhatsApp para enviar."
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,42 +6,65 @@
     <title>Relatório da Semana</title>
     <style>
         body {
-            font-family: Helvetica, Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #007bff;
             color: #fff;
-            text-shadow: 1px 1px 2px #000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 20px;
         }
         .report-section {
+            text-align: left;
             margin-bottom: 20px;
         }
         .report-section label {
+            font-weight: bold;
             display: block;
             margin-bottom: 5px;
+            color: #333;
         }
-        .report-section input {
-            width: 100%;
+        .report-section input[type="text"] {
+            width: calc(100% - 10px);
             padding: 8px;
             margin-bottom: 10px;
-            background-color: #fff;
-            color: #000;
-            border: none;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        .generated-report {
+        .report-section .generated-report {
             white-space: pre-wrap;
             background-color: #0056b3;
             padding: 10px;
             border: 1px solid #ccc;
             color: #fff;
             text-shadow: 1px 1px 2px #000;
+            margin-bottom: 10px;
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 30px;
             background-color: #0056b3;
             color: #fff;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            text-shadow: 1px 1px 2px #000;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #004494;
@@ -52,53 +73,55 @@
 </head>
 <body>
 
-    <h1>Informações da Semana</h1>
+    <div class="container">
+        <h1>Informações da Semana</h1>
 
-    <div class="report-section">
-        <label for="revenda">Revenda:</label>
-        <input type="text" id="revenda" placeholder="Digite a revenda">
+        <div class="report-section">
+            <label for="revenda">Revenda:</label>
+            <input type="text" id="revenda" placeholder="Digite a revenda">
 
-        <label for="filial">Filial:</label>
-        <input type="text" id="filial" placeholder="Digite a filial">
+            <label for="filial">Filial:</label>
+            <input type="text" id="filial" placeholder="Digite a filial">
 
-        <label for="id">ID:</label>
-        <input type="text" id="id" placeholder="Digite o ID">
+            <label for="id">ID:</label>
+            <input type="text" id="id" placeholder="Digite o ID">
 
-        <label for="consultor">Consultor:</label>
-        <input type="text" id="consultor" placeholder="Digite o consultor">
+            <label for="consultor">Consultor:</label>
+            <input type="text" id="consultor" placeholder="Digite o consultor">
 
-        <label for="regional">Regional:</label>
-        <input type="text" id="regional" placeholder="Digite a regional">
+            <label for="regional">Regional:</label>
+            <input type="text" id="regional" placeholder="Digite a regional">
 
-        <label for="cidade">Cidade:</label>
-        <input type="text" id="cidade" placeholder="Digite a cidade">
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" placeholder="Digite a cidade">
 
-        <label for="periodo">Período:</label>
-        <input type="text" id="periodo" placeholder="Digite o período">
+            <label for="periodo">Período:</label>
+            <input type="text" id="periodo" placeholder="Digite o período">
 
-        <label for="panasonic1">Panasonic Produto 1:</label>
-        <input type="text" id="panasonic1" placeholder="Digite o nome do produto">
-        <input type="text" id="panasonic1-preco" placeholder="Digite o valor do produto">
+            <label for="panasonic1">Panasonic Produto 1:</label>
+            <input type="text" id="panasonic1" placeholder="Digite o nome do produto">
+            <input type="text" id="panasonic1-preco" placeholder="Digite o valor do produto">
 
-        <label for="panasonic2">Panasonic Produto 2:</label>
-        <input type="text" id="panasonic2" placeholder="Digite o nome do produto">
-        <input type="text" id="panasonic2-preco" placeholder="Digite o valor do produto">
+            <label for="panasonic2">Panasonic Produto 2:</label>
+            <input type="text" id="panasonic2" placeholder="Digite o nome do produto">
+            <input type="text" id="panasonic2-preco" placeholder="Digite o valor do produto">
 
-        <label for="concorrencia1">Concorrência Produto 1:</label>
-        <input type="text" id="concorrencia1" placeholder="Digite o nome do produto">
-        <input type="text" id="concorrencia1-preco" placeholder="Digite o valor do produto">
+            <label for="concorrencia1">Concorrência Produto 1:</label>
+            <input type="text" id="concorrencia1" placeholder="Digite o nome do produto">
+            <input type="text" id="concorrencia1-preco" placeholder="Digite o valor do produto">
 
-        <label for="concorrencia2">Concorrência Produto 2:</label>
-        <input type="text" id="concorrencia2" placeholder="Digite o nome do produto">
-        <input type="text" id="concorrencia2-preco" placeholder="Digite o valor do produto">
+            <label for="concorrencia2">Concorrência Produto 2:</label>
+            <input type="text" id="concorrencia2" placeholder="Digite o nome do produto">
+            <input type="text" id="concorrencia2-preco" placeholder="Digite o valor do produto">
 
-        <button onclick="generateReport()">Gerar Relatório</button>
-    </div>
+            <button onclick="generateReport()">Gerar Relatório</button>
+        </div>
 
-    <div class="report-section">
-        <h2>Relatório Gerado:</h2>
-        <div id="generatedReport" class="generated-report"></div>
-        <button onclick="copyReport()">Copiar Relatório</button>
+        <div class="report-section">
+            <h2>Relatório Gerado:</h2>
+            <div id="generatedReport" class="generated-report"></div>
+            <button onclick="copyReport()">Copiar Relatório</button>
+        </div>
     </div>
 
     <script>
