@@ -3,45 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEPÓSITO</title>
+    <title>DEPÓSITO DA REDE</title>
     <style>
         body {
-            font-family: Helvetica, Arial, sans-serif;
-            background-color: blue; /* Azul claro */
-            color: white;
-            margin: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #007bff;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            max-width: 90%;
-            margin: auto;
-            padding: 20px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 20px;
         }
         .section {
+            text-align: left;
             margin-bottom: 20px;
         }
         label {
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
+            color: #333;
         }
         input[type="text"], textarea {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
             box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
         }
         button {
-            padding: 10px 20px;
-            background-color: gray;
-            color: white;
+            padding: 12px 30px;
+            background-color: #007bff;
+            color: #fff;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            margin-right: 10px;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: blue;
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -50,15 +71,15 @@
         <h1>DEPÓSITO DA REDE</h1>
         <div class="section">
             <label for="rede">Rede:</label>
-            <input type="text" id="rede" value="">
+            <input type="text" id="rede" placeholder="Digite a rede">
         </div>
         <div class="section">
             <label for="data">Data:</label>
-            <input type="text" id="data" value="">
+            <input type="text" id="data" placeholder="Digite a data">
         </div>
         <div class="section">
             <label for="geladeira">GELADEIRA:</label>
-            <textarea id="geladeira" rows="6">NR-BT41PD1WA - 
+            <textarea id="geladeira" placeholder="Quantidade de cada modelo separados por vírgula">NR-BT41PD1WA - 
 NR-BT41PD1XA - 
 NR-BT43PV1TA - 
 NR-BT50BD3WA - 
@@ -72,30 +93,30 @@ NR-BB53PV3XA -
 NR-BB53GV3BA - 
 NR-BB53GV3M  - 
 NR-BB71X     - 
-NR-BB71GV    - </textarea>
+NR-BB71GV    </textarea>
         </div>
         <div class="section">
             <label for="mwo">MWO:</label>
-            <textarea id="mwo" rows="6">NN-ST25LWRUN - 
+            <textarea id="mwo" placeholder="Quantidade de cada modelo separados por vírgula">NN-ST25LWRUN - 
 NN-ST27LWRUN - 
 NN-ST55LMRUN - 
 NN-ST65LWRUN - 
 NN-ST66NBRUN - 
 NN-ST67LSRUN - 
-NN-CD89NBRUN - </textarea>
+NN-CD89NBRUN</textarea>
         </div>
         <div class="section">
             <label for="maquina_lavar">MÁQUINA DE LAVAR:</label>
-            <textarea id="maquina_lavar" rows="6">NA-F120B1WA - 
+            <textarea id="maquina_lavar" placeholder="Quantidade de cada modelo separados por vírgula">NA-F120B1WA - 
 NA-F120B1TA - 
 NA-F140B1WA - 
 NA-F160B6W  - 
 NA-F170B7WA - 
-NA-F180P7TA - </textarea>
+NA-F180P7TA</textarea>
         </div>
         <div class="section">
             <label for="builtin">Built-in:</label>
-            <input type="text" id="builtin" value="NP-6M2FTKBRP -  ">
+            <textarea id="builtin" placeholder="Quantidade de cada modelo separados por vírgula"></textarea>
         </div>
 
         <button onclick="copyToClipboard()">Copiar Relatório</button>
@@ -112,7 +133,7 @@ NA-F180P7TA - </textarea>
             const maquinaLavar = document.getElementById('maquina_lavar').value;
             const builtin = document.getElementById('builtin').value;
 
-            const report = `*DEPÓSITO PANASONIC*\n*REDE:* ${rede}\n*DATA:* ${data}\n\n*GELADEIRA*\n${geladeira}\n\n*MWO*\n${mwo}\n\n*MÁQUINA DE LAVAR*\n${maquinaLavar}\n\n*Built-in:*\n${builtin}`;
+            const report = `*DEPÓSITO PANASONIC*\n*REDE:* ${rede}\n*DATA:* ${data}\n\n*GELADEIRA*\n${formatModels(geladeira)}\n\n*MWO*\n${formatModels(mwo)}\n\n*MÁQUINA DE LAVAR*\n${formatModels(maquinaLavar)}\n\n*Built-in:*\n${formatModels(builtin)}`;
 
             const reportOutput = document.getElementById('reportOutput');
             reportOutput.style.display = 'block';
@@ -122,6 +143,11 @@ NA-F180P7TA - </textarea>
             document.execCommand('copy');
             alert('Relatório copiado para a área de transferência!');
             reportOutput.style.display = 'none';
+        }
+
+        function formatModels(models) {
+            const modelList = models.split(',').map(model => model.trim()).join(' - ');
+            return modelList;
         }
     </script>
 </body>
