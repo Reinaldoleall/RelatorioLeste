@@ -3,159 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>informacoes_da_semana</title>
-
+    <title>Relatório da Semana</title>
     <style>
         body {
-            background-color: blue; /* Azul claro */
-            color: white;
             font-family: Helvetica, Arial, sans-serif;
+            margin: 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
         }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        .report-section {
+            margin-bottom: 20px;
         }
-
-        button {
-            background-color: #0288d1; /* Azul */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #0288d1; /* Azul mais escuro */
-        }
-
-        button:disabled {
-            background-color: #ccc; /* Cinza claro para botão desabilitado */
-            cursor: not-allowed;
-        }
-
-        label {
+        .report-section label {
             display: block;
-            margin-top: 10px;
+            margin-bottom: 5px;
         }
-
-        input[type="text"], textarea {
+        .report-section input {
             width: 100%;
             padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
+            margin-bottom: 10px;
+            background-color: #fff;
+            color: #000;
+            border: none;
         }
-
-        h2, h3 {
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        .generated-report {
+            white-space: pre-wrap;
+            background-color: #0056b3;
+            padding: 10px;
+            border: 1px solid #ccc;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px #000;
+        }
+        button:hover {
+            background-color: #004494;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>informacoes da semana</h2>
-        <form id="reportForm">
-            <label for="*revenda*">*Revenda*:</label>
-            <input type="text" id="revenda" name="revenda" value="">
 
-            <label for="filial">*Filial:*</label>
-            <input type="text" id="filial" name="filial" value="">
+    <h1>Relatório da Semana</h1>
 
-            <label for="id">*Id:*</label>
-            <input type="text" id="id" name="id" value=" ">
+    <div class="report-section">
+        <label for="revenda">Revenda:</label>
+        <input type="text" id="revenda" placeholder="Digite a revenda">
 
-            <label for="regional">*Regional:*</label>
-            <input type="text" id="regional" name="regional" value="Leste">
+        <label for="filial">Filial:</label>
+        <input type="text" id="filial" placeholder="Digite a filial">
 
-            <label for="cidade">*Cidade:*</label>
-            <input type="text" id="cidade" name="cidade" value="Rio de Janeiro RJ">
+        <label for="id">ID:</label>
+        <input type="text" id="id" placeholder="Digite o ID">
 
-            <h3>Panasonic</h3>
-            <label for="panasonic1">🔹:</label>
-            <input type="text" id="panasonic1" name="panasonic1" value=" - R$">
+        <label for="consultor">Consultor:</label>
+        <input type="text" id="consultor" placeholder="Digite o consultor">
 
-            <label for="panasonic2">🔹:</label>
-            <input type="text" id="panasonic2" name="panasonic2" value=" - R$">
+        <label for="periodo">Período:</label>
+        <input type="text" id="periodo" placeholder="Digite o período">
 
-            <h3>Concorrência</h3>
-            <label for="concorrencia1">🔹:</label>
-            <input type="text" id="concorrencia1" name="concorrencia1" value=" - R$">
+        <label for="panasonic1">Panasonic Produto 1:</label>
+        <input type="text" id="panasonic1" placeholder="Digite o nome do produto">
+        <input type="text" id="panasonic1-preco" placeholder="Digite o valor do produto">
 
-            <label for="concorrencia2">🔹:</label>
-            <input type="text" id="concorrencia2" name="concorrencia2" value=" - R$">
+        <label for="panasonic2">Panasonic Produto 2:</label>
+        <input type="text" id="panasonic2" placeholder="Digite o nome do produto">
+        <input type="text" id="panasonic2-preco" placeholder="Digite o valor do produto">
 
-            <label for="coordenador">*Coordenador:*</label>
-            <input type="text" id="coordenador" name="coordenador" value="Vanderson">
+        <label for="concorrencia1">Concorrência Produto 1:</label>
+        <input type="text" id="concorrencia1" placeholder="Digite o nome do produto">
+        <input type="text" id="concorrencia1-preco" placeholder="Digite o valor do produto">
 
-            <label for="supervisor">*Supervisor:*</label>
-            <input type="text" id="supervisor" name="supervisor" value="Stephanie">
+        <label for="concorrencia2">Concorrência Produto 2:</label>
+        <input type="text" id="concorrencia2" placeholder="Digite o nome do produto">
+        <input type="text" id="concorrencia2-preco" placeholder="Digite o valor do produto">
 
-            <label for="consultora">*Consultor:*</label>
-            <input type="text" id="consultora" name="consultora" value=" ">
+        <button onclick="generateReport()">Gerar Relatório</button>
+    </div>
 
-            <label for="periodo">*Período:*</label>
-            <input type="text" id="periodo" name="periodo" value=" / /2024">
-
-            <button type="button" onclick="generateReport()">Gerar Relatório</button>
-        </form>
-
-        <textarea id="reportOutput" rows="10" readonly></textarea>
-        <button type="button" onclick="copyReport()">Copiar Relatório</button>
+    <div class="report-section">
+        <h2>Relatório Gerado:</h2>
+        <div id="generatedReport" class="generated-report"></div>
+        <button onclick="copyReport()">Copiar Relatório</button>
     </div>
 
     <script>
-        // Função para gerar relatório
         function generateReport() {
-            var revenda = document.getElementById("revenda").value;
-            var filial = document.getElementById("filial").value;
-            var id = document.getElementById("id").value;
-            var regional = document.getElementById("regional").value;
-            var cidade = document.getElementById("cidade").value;
-            var panasonic1 = document.getElementById("panasonic1").value;
-            var panasonic2 = document.getElementById("panasonic2").value;
-            var concorrencia1 = document.getElementById("concorrencia1").value;
-            var concorrencia2 = document.getElementById("concorrencia2").value;
-            var coordenador = document.getElementById("coordenador").value;
-            var supervisor = document.getElementById("supervisor").value;
-            var consultora = document.getElementById("consultora").value;
-            var periodo = document.getElementById("periodo").value;
+            const revenda = document.getElementById('revenda').value;
+            const filial = document.getElementById('filial').value;
+            const id = document.getElementById('id').value;
+            const consultor = document.getElementById('consultor').value;
+            const periodo = document.getElementById('periodo').value;
 
-            var reportText = `Relatório da Semana:\n\n`;
-            reportText += `Revenda: ${revenda}\n`;
-            reportText += `Filial: ${filial}\n`;
-            reportText += `ID: ${id}\n`;
-            reportText += `Regional: ${regional}\n`;
-            reportText += `Cidade: ${cidade}\n\n`;
+            const panasonic1 = document.getElementById('panasonic1').value;
+            const panasonic1Preco = document.getElementById('panasonic1-preco').value;
+            const panasonic2 = document.getElementById('panasonic2').value;
+            const panasonic2Preco = document.getElementById('panasonic2-preco').value;
 
-            reportText += `Panasonic:\n`;
-            reportText += `🔹: ${panasonic1}\n`;
-            reportText += `🔹: ${panasonic2}\n\n`;
+            const concorrencia1 = document.getElementById('concorrencia1').value;
+            const concorrencia1Preco = document.getElementById('concorrencia1-preco').value;
+            const concorrencia2 = document.getElementById('concorrencia2').value;
+            const concorrencia2Preco = document.getElementById('concorrencia2-preco').value;
 
-            reportText += `Concorrência:\n`;
-            reportText += `🔹: ${concorrencia1}\n`;
-            reportText += `🔹: ${concorrencia2}\n\n`;
+            const report = `
+<strong>Relatório da Semana:</strong>
 
-            reportText += `Coordenador: ${coordenador}\n`;
-            reportText += `Supervisor: ${supervisor}\n`;
-            reportText += `Consultor: ${consultora}\n`;
-            reportText += `Período: ${periodo}`;
+<strong>Revenda:</strong> ${revenda}
+<strong>Filial:</strong> ${filial}
+<strong>ID:</strong> ${id}
+<strong>Regional:</strong> Leste
+<strong>Cidade:</strong> Rio de Janeiro RJ
 
-            document.getElementById("reportOutput").value = reportText;
+<strong>Panasonic:</strong>
+🔹 ${panasonic1}: - R$${panasonic1Preco}
+🔹 ${panasonic2}: - R$${panasonic2Preco}
+
+<strong>Concorrência:</strong>
+🔹 ${concorrencia1}: - R$${concorrencia1Preco}
+🔹 ${concorrencia2}: - R$${concorrencia2Preco}
+
+<strong>Coordenador:</strong> Vanderson
+<strong>Supervisor:</strong> Stephanie
+<strong>Consultor:</strong> ${consultor}
+<strong>Período:</strong> ${periodo}
+            `;
+
+            document.getElementById('generatedReport').innerHTML = report;
         }
 
-        // Função para copiar o relatório
         function copyReport() {
-            var reportText = document.getElementById("reportOutput");
-            reportText.select();
-            reportText.setSelectionRange(0, 99999); /* For mobile devices */
-
-            document.execCommand("copy");
-            alert("Relatório copiado para a área de transferência!");
+            const reportText = document.getElementById('generatedReport').innerHTML;
+            const textarea = document.createElement('textarea');
+            textarea.innerHTML = reportText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Relatório copiado para a área de transferência!');
         }
     </script>
+
 </body>
 </html>
