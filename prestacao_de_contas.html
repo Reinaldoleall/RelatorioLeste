@@ -106,12 +106,12 @@
             </div>
         </form>
         <button onclick="gerarRelatorio()">Gerar Relatório</button>
-        <button onclick="compartilhar()" style="display:none;" id="compartilharBtn">Compartilhar</button>
 
         <div class="report-content" id="reportContent">
             <h2>Relatório Gerado</h2>
             <p id="reportText"></p>
             <img id="reportImage" src="" alt="Foto do Relatório">
+            <button onclick="compartilhar()" id="compartilharBtn">Compartilhar</button>
         </div>
     </div>
     <script>
@@ -134,7 +134,6 @@
             document.getElementById('reportText').innerText = mensagem;
             document.getElementById('reportImage').src = foto;
             document.getElementById('reportContent').style.display = 'block';
-            document.getElementById('compartilharBtn').style.display = 'inline-block';
         }
 
         function compartilhar() {
