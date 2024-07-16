@@ -136,26 +136,33 @@
             document.getElementById('reportContent').style.display = 'block';
         }
 
+        function base64ToBlob(base64, mime) {
+            const byteString = atob(base64.split(',')[1]);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mime });
+        }
+
         function compartilhar() {
             const reportText = document.getElementById('reportText').innerText;
-            const foto = document.getElementById('reportImage').src;
+            const fotoSrc = document.getElementById('reportImage').src;
 
             if (navigator.share) {
                 const textBlob = new Blob([reportText], { type: 'text/plain' });
                 const textFile = new File([textBlob], 'relatorio.txt', { type: 'text/plain' });
 
-                fetch(foto)
-                .then(res => res.blob())
-                .then(blob => {
-                    const imageFile = new File([blob], 'relatorio.jpg', { type: blob.type });
+                const imageBlob = base64ToBlob(fotoSrc, 'image/jpeg');
+                const imageFile = new File([imageBlob], 'relatorio.jpg', { type: 'image/jpeg' });
 
-                    navigator.share({
-                        title: 'Prestação de Contas',
-                        files: [textFile, imageFile]
-                    })
-                    .then(() => console.log('Compartilhado com sucesso!'))
-                    .catch((error) => console.error('Erro ao compartilhar:', error));
-                });
+                navigator.share({
+                    title: 'Prestação de Contas',
+                    files: [textFile, imageFile]
+                })
+                .then(() => console.log('Compartilhado com sucesso!'))
+                .catch((error) => console.error('Erro ao compartilhar:', error));
             } else {
                 alert('Para compartilhar, utilize as opções do seu navegador.');
             }
