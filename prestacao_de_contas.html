@@ -62,6 +62,21 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .report-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .report-content img {
+            max-width: 200px;
+            display: block;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -90,34 +105,51 @@
                 <img id="fotoAnexada" src="" alt="Foto Anexada"><br>
             </div>
         </form>
-        <button onclick="compartilhar()">Compartilhar</button>
+        <button onclick="gerarRelatorio()">Gerar Relatório</button>
+        <button onclick="compartilhar()" style="display:none;" id="compartilharBtn">Compartilhar</button>
+
+        <div class="report-content" id="reportContent">
+            <h2>Relatório Gerado</h2>
+            <p id="reportText"></p>
+            <img id="reportImage" src="" alt="Foto do Relatório">
+        </div>
     </div>
     <script>
-        function compartilhar() {
+        function formatarData(data) {
+            const partes = data.split("-");
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
+        function gerarRelatorio() {
             const nome = document.getElementById('nomeInput').value;
             const acao = document.getElementById('acaoInput').value;
             const data = document.getElementById('dataInput').value;
+            const dataFormatada = formatarData(data);
             const nfc = document.getElementById('nfcInput').value;
             const valor = document.getElementById('valorInput').value;
             const foto = document.getElementById('fotoAnexada').src;
             
-            const mensagem = `Prestação de Contas:
-Nome: ${nome}
-Tipo da ação: ${acao}
-Data: ${data}
-N° NFC: ${nfc}
-Valor: ${valor}`;
+            const mensagem = `*Nome:* ${nome}\n*Tipo da ação:* ${acao}\n*Data:* ${dataFormatada}\n*N° NFC:* ${nfc}\n*Valor:* ${valor}`;
+
+            document.getElementById('reportText').innerText = mensagem;
+            document.getElementById('reportImage').src = foto;
+            document.getElementById('reportContent').style.display = 'block';
+            document.getElementById('compartilharBtn').style.display = 'inline-block';
+        }
+
+        function compartilhar() {
+            const reportText = document.getElementById('reportText').innerText;
+            const foto = document.getElementById('reportImage').src;
 
             if (navigator.share) {
                 navigator.share({
                     title: 'Prestação de Contas',
-                    text: mensagem,
-                    files: [new File([foto], "foto.jpg", { type: "image/jpeg" })]
+                    text: reportText,
+                    url: foto
                 })
                 .then(() => console.log('Compartilhado com sucesso!'))
                 .catch((error) => console.error('Erro ao compartilhar:', error));
             } else {
-                // Simulação para navegadores que não suportam a API de compartilhamento
                 alert('Para compartilhar, utilize as opções do seu navegador.');
             }
         }
