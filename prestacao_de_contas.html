@@ -88,10 +88,9 @@
                 <input type="file" id="fotoInput" name="foto" accept="image/*"><br>
                 
                 <img id="fotoAnexada" src="" alt="Foto Anexada"><br>
-                
-                <button type="submit">Enviar Relatório</button>
             </div>
         </form>
+        <button onclick="compartilhar()">Compartilhar</button>
     </div>
     <script>
         function compartilhar() {
@@ -101,7 +100,8 @@
             if (navigator.share) { // Verifica se o navegador suporta a API de compartilhamento
                 navigator.share({
                     title: 'Prestação de Contas',
-                    text: mensagem
+                    text: mensagem,
+                    url: url
                 })
                 .then(() => console.log('Compartilhado com sucesso!'))
                 .catch((error) => console.error('Erro ao compartilhar:', error));
@@ -120,22 +120,6 @@
                 }
                 reader.readAsDataURL(file);
             }
-        });
-
-        document.getElementById('prestacaoForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Previne o envio padrão do formulário
-            
-            // Coleta dos dados do formulário
-            const formData = new FormData(this);
-
-            // Exibição dos dados no console (substitua por envio real para servidor)
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
-
-            // Simulação de envio bem-sucedido
-            alert('Relatório enviado com sucesso!');
-            // Você pode adicionar aqui uma lógica para enviar os dados para um servidor real
         });
     </script>
 </body>
