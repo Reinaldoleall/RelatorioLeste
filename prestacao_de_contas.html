@@ -94,14 +94,25 @@
     </div>
     <script>
         function compartilhar() {
-            const url = window.location.href; // Obtém a URL atual da página
-            const mensagem = `Confira a prestação de contas de Giselly Silva: ${url}`; // Mensagem a ser compartilhada
+            const nome = document.getElementById('nomeInput').value;
+            const acao = document.getElementById('acaoInput').value;
+            const data = document.getElementById('dataInput').value;
+            const nfc = document.getElementById('nfcInput').value;
+            const valor = document.getElementById('valorInput').value;
+            const foto = document.getElementById('fotoAnexada').src;
+            
+            const mensagem = `Prestação de Contas:
+Nome: ${nome}
+Tipo da ação: ${acao}
+Data: ${data}
+N° NFC: ${nfc}
+Valor: ${valor}`;
 
-            if (navigator.share) { // Verifica se o navegador suporta a API de compartilhamento
+            if (navigator.share) {
                 navigator.share({
                     title: 'Prestação de Contas',
                     text: mensagem,
-                    url: url
+                    files: [new File([foto], "foto.jpg", { type: "image/jpeg" })]
                 })
                 .then(() => console.log('Compartilhado com sucesso!'))
                 .catch((error) => console.error('Erro ao compartilhar:', error));
