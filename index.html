@@ -18,11 +18,14 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-image: url('https://#');
+            background-size: cover;
+            background-repeat: no-repeat;
         }
 
         .container {
             max-width: 600px;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -30,9 +33,10 @@
         }
 
         .container h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #333;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .container p {
@@ -42,29 +46,129 @@
             margin-bottom: 30px;
         }
 
-        .container a {
+        .menu {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .menu .dropdown {
+            position: relative;
             display: inline-block;
-            background-color: #007bff;
-            color: #fff;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
             text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 5px;
+            display: block;
             transition: background-color 0.3s;
         }
 
-        .container a:hover {
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+
+        .menu .dropbtn {
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 5px 5px 0 0;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+
+        .menu .dropbtn:hover {
             background-color: #0056b3;
+        }
+
+        .content {
+            display: none;
+            padding: 20px 0;
+            text-align: left;
+        }
+
+        .content.active {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: blue;">Bem-vindo!</h1>
-        <p style="color: blue;">Clique nos botões abaixo para acessar as informações da semana ou o depósito das redes.</p>
-        <a href="informacoes_da_semana.html">Informações da Semana</a>
-        <a href="deposito_das_redes.html">Depósito das Redes</a>
-        <a href="introducao_de_produtos.html">Introdução de produtos</a>
-        <a href="prestacao_de_contas.html">Prestação de contas</a>
+        <h1>Bem-vindo!</h1>
+        <p>Clique no menu abaixo para acessar as diferentes seções.</p>
+        
+        <div class="menu">
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Opções</a>
+                <div class="dropdown-content">
+                    <a href="#informacoes_da_semana">Informações da Semana</a>
+                    <a href="#deposito_das_redes">Depósito das Redes</a>
+                    <a href="#introducao_de_produtos">Introdução de Produtos</a>
+                    <a href="#prestacao_de_contas">Prestação de Contas</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="informacoes_da_semana" class="content active">
+            <h2>Informações da Semana</h2>
+            <p>Aqui estão as informações atualizadas da semana.</p>
+            <a href="informacoes_da_semana.html">Ver mais detalhes</a>
+        </div>
+
+        <div id="deposito_das_redes" class="content">
+            <h2>Depósito das Redes</h2>
+            <p>Confira o depósito das redes feito recentemente.</p>
+            <a href="deposito_das_redes.html">Ver mais detalhes</a>
+        </div>
+
+        <div id="introducao_de_produtos" class="content">
+            <h2>Introdução de Produtos</h2>
+            <p>Veja as novidades e lançamentos de produtos.</p>
+            <a href="introducao_de_produtos.html">Ver mais detalhes</a>
+        </div>
+
+        <div id="prestacao_de_contas" class="content">
+            <h2>Prestação de Contas</h2>
+            <p>Confira os relatórios e a prestação de contas.</p>
+            <a href="prestacao_de_contas.html">Ver mais detalhes</a>
+        </div>
     </div>
+
+    <script>
+        const menuLinks = document.querySelectorAll('.dropdown-content a');
+        const contentSections = document.querySelectorAll('.content');
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = this.getAttribute('href').substring(1);
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === target) {
+                        section.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
