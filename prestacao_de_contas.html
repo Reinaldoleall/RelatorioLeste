@@ -142,13 +142,19 @@
             const foto = document.getElementById('reportImage').src;
 
             if (navigator.share) {
-                navigator.share({
-                    title: 'Prestação de Contas',
-                    text: reportText,
-                    url: foto
-                })
-                .then(() => console.log('Compartilhado com sucesso!'))
-                .catch((error) => console.error('Erro ao compartilhar:', error));
+                fetch(foto)
+                .then(res => res.blob())
+                .then(blob => {
+                    const file = new File([blob], "relatorio.jpg", { type: blob.type });
+
+                    navigator.share({
+                        title: 'Prestação de Contas',
+                        text: reportText,
+                        files: [file]
+                    })
+                    .then(() => console.log('Compartilhado com sucesso!'))
+                    .catch((error) => console.error('Erro ao compartilhar:', error));
+                });
             } else {
                 alert('Para compartilhar, utilize as opções do seu navegador.');
             }
