@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prestação de Contas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .report {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="file"] {
+            width: calc(100% - 12px); /* Ajusta para compensar o padding do input */
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PRESTAÇÃO DE CONTAS</h1>
+        <form id="prestacaoForm">
+            <div class="report">
+                <label for="nomeInput">Nome:</label>
+                <input type="text" id="nomeInput" name="nome" required><br>
+                
+                <label for="acaoInput">Tipo da ação:</label>
+                <input type="text" id="acaoInput" name="tipoAcao" required><br>
+                
+                <label for="dataInput">Data:</label>
+                <input type="date" id="dataInput" name="data" required><br>
+                
+                <label for="nfcInput">N° NFC:</label>
+                <input type="text" id="nfcInput" name="nfc" required><br>
+                
+                <label for="valorInput">Valor:</label>
+                <input type="text" id="valorInput" name="valor" required><br>
+                
+                <label for="fotoInput">Anexar Foto:</label>
+                <input type="file" id="fotoInput" name="foto" accept="image/*"><br>
+                
+                <img id="fotoAnexada" src="" alt="Foto Anexada"><br>
+                
+                <button type="submit">Enviar Relatório</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        function compartilhar() {
+            const url = window.location.href; // Obtém a URL atual da página
+            const mensagem = `Confira a prestação de contas de Giselly Silva: ${url}`; // Mensagem a ser compartilhada
+
+            if (navigator.share) { // Verifica se o navegador suporta a API de compartilhamento
+                navigator.share({
+                    title: 'Prestação de Contas',
+                    text: mensagem
+                })
+                .then(() => console.log('Compartilhado com sucesso!'))
+                .catch((error) => console.error('Erro ao compartilhar:', error));
+            } else {
+                // Simulação para navegadores que não suportam a API de compartilhamento
+                alert('Para compartilhar, utilize as opções do seu navegador.');
+            }
+        }
+
+        document.getElementById('fotoInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('fotoAnexada').setAttribute('src', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('prestacaoForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+            
+            // Coleta dos dados do formulário
+            const formData = new FormData(this);
+
+            // Exibição dos dados no console (substitua por envio real para servidor)
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            // Simulação de envio bem-sucedido
+            alert('Relatório enviado com sucesso!');
+            // Você pode adicionar aqui uma lógica para enviar os dados para um servidor real
+        });
+    </script>
+</body>
+</html>
