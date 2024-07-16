@@ -18,7 +18,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('https://#');
+            background-image: url('#');
             background-size: cover;
             background-repeat: no-repeat;
         }
@@ -114,7 +114,7 @@
 <body>
     <div class="container">
         <h1>Bem-vindo!</h1>
-        <p>Clique no menu abaixo para acessar as diferentes opções.</p>
+        <p>Clique no menu abaixo para acessar as diferentes seções.</p>
         
         <div class="menu">
             <div class="dropdown">
@@ -130,34 +130,39 @@
 
         <div id="informacoes_da_semana" class="content active">
             <h2>Informações da Semana</h2>
-            <p>Após selecionar a opção desejada clique abaixo para iniciar.</p>
-            <a href="informacoes_da_semana.html">Ver Iniciar</a>
+            <a href="informacoes_da_semana.html">Iniciar</a>
         </div>
 
         <div id="deposito_das_redes" class="content">
             <h2>Depósito das Redes</h2>
-            <p>Após selecionar a opção desejada clique abaixo para iniciar.</p>
             <a href="deposito_das_redes.html">Iniciar</a>
         </div>
 
         <div id="introducao_de_produtos" class="content">
             <h2>Introdução de Produtos</h2>
-            <p>Após selecionar a opção desejada clique abaixo para iniciar.</p>
             <a href="introducao_de_produtos.html">Iniciar</a>
         </div>
 
         <div id="prestacao_de_contas" class="content">
             <h2>Prestação de Contas</h2>
-            <p>Após selecionar a opção desejada clique abaixo para iniciar.</p>
             <a href="prestacao_de_contas.html">Iniciar</a>
         </div>
+
     </div>
 
     <script>
-        const menuLinks = document.querySelectorAll('.dropdown-content a');
+        const dropdown = document.querySelector('.dropdown');
+        const dropdownToggle = dropdown.querySelector('.dropbtn');
+        const dropdownContent = dropdown.querySelector('.dropdown-content');
+        const dropdownLinks = dropdown.querySelectorAll('.dropdown-content a');
         const contentSections = document.querySelectorAll('.content');
 
-        menuLinks.forEach(link => {
+        dropdownToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+        });
+
+        dropdownLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = this.getAttribute('href').substring(1);
@@ -167,6 +172,7 @@
                         section.classList.add('active');
                     }
                 });
+                dropdownContent.style.display = 'none'; // Fechar o dropdown após selecionar uma opção
             });
         });
     </script>
