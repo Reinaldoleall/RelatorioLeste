@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário de Avaria PDV</title>
+<style>
+    body {
+        text-align: left;
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 5px;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+        color: #333;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    label {
+        font-weight: bold;
+        display: block;
+    }
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <left><h2>Formulário de Avaria</h2>
+    <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" class="form-control" value="">
+    </div>
+    <div class="form-group">
+        <label for="rede">Rede:</label>
+        <input type="text" id="rede" class="form-control" value="">
+    </div>
+    <div class="form-group">
+        <label for="filial">Filial:</label>
+        <input type="text" id="filial" class="form-control" value="">
+    </div>
+    <div class="form-group">
+        <label for="produto">Produto:</label>
+        <select id="produto" class="form-control">
+            <option value="modelo">Modelo</option>
+            <option value="NR-BT41PD1WA">NR-BT41PD1WA</option>
+            <option value="NR-BT41PD1XA">NR-BT41PD1XA</option>
+            <option value="NR-BT43PV1TA">NR-BT43PV1TA</option>
+            <option value="NR-BT50BD3WA">NR-BT50BD3WA</option>
+            <option value="NR-BT50BD3XA">NR-BT50BD3XA</option>
+            <option value="NR-BT55PV2WA">NR-BT55PV2WA</option>
+            <option value="NR-BT55PV2XA">NR-BT55PV2XA</option>
+            <option value="NR-BB41GV">NR-BB41GV</option>
+            <option value="NR-BB41T">NR-BB41T</option>
+            <option value="NR-BB53PV3WA">NR-BB53PV3WA</option>
+            <option value="NR-BB53PV3XA">NR-BB53PV3XA</option>
+            <option value="NR-BB53GV3BA">NR-BB53GV3BA</option>
+            <option value="NR-BB53GV3M">NR-BB53GV3M</option>
+            <option value="NR-BB71X">NR-BB71X</option>
+            <option value="NR-BB71GV">NR-BB71GV</option>
+            <option value="NN-ST25LWRUN">NN-ST25LWRUN</option>
+            <option value="NN-ST27LWRUN">NN-ST27LWRUN</option>
+            <option value="NN-ST55LMRUN">NN-ST55LMRUN</option>
+            <option value="NN-ST65LWRUN">NN-ST65LWRUN</option>
+            <option value="NN-ST66NBRUN">NN-ST66NBRUN</option>
+            <option value="NN-ST67LSRUN">NN-ST67LSRUN</option>
+            <option value="NN-CD89NBRUN">NN-CD89NBRUN</option>
+            <option value="NA-F120B1WA">NA-F120B1WA</option>
+            <option value="NA-F120B1TA">NA-F120B1TA</option>
+            <option value="NA-F140B1WA">NA-F140B1WA</option>
+            <option value="NA-F160B6W">NA-F160B6W</option>
+            <option value="NA-F170B7WA">NA-F170B7WA</option>
+            <option value="NA-F180P7TA">NA-F180P7TA</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="ns">N.S.:</label>
+        <input type="text" id="ns" class="form-control" value="">
+    </div>
+    <div class="form-group">
+        <label for="gerente">Gerente:</label>
+        <input type="text" id="gerente" class="form-control" value="">
+    </div>
+    <div class="form-group">
+        <label for="avaria">Avaria:</label>
+        <textarea id="avaria" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="reportado-pds">Foi reportada ao PDS?</label>
+        <select id="reportado-pds" class="form-control">
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="reportado-stage">Foi reportado no Stage?</label>
+        <select id="reportado-stage" class="form-control">
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+        </select>
+    </div>
+    <button class="btn" onclick="gerarRelatorio()">Gerar Relatório</button>
+</div>
+
+<script>
+    function gerarRelatorio() {
+        var nome = document.getElementById('nome').value;
+        var rede = document.getElementById('rede').value;
+        var filial = document.getElementById('filial').value;
+        var produto = document.getElementById('produto').value;
+        var ns = document.getElementById('ns').value;
+        var gerente = document.getElementById('gerente').value;
+        var avaria = document.getElementById('avaria').value;
+        var reportadoPDS = document.getElementById('reportado-pds').value;
+        var reportadoStage = document.getElementById('reportado-stage').value;
+
+        var relatorio = `
+        *AVARIA ENCONTRADA NO PDV*
+            
+  *Nome:* ${nome}
+  *Rede:* ${rede}
+  *Filial:* ${filial}
+  *Produto:* ${produto}
+  *N.S.:* ${ns}
+  *Gerente:* ${gerente}
+            
+  *Avaria:* ${avaria}
+  *Foi reportada ao PDS?:* ${reportadoPDS === 'sim' ? 'Sim' : 'Não'}
+  *Foi reportado no Stage?:* ${reportadoStage === 'sim' ? 'Sim' : 'Não'}
+        `;
+
+        console.log(relatorio);
+
+        navigator.clipboard.writeText(relatorio)
+            .then(() => {
+                alert('Relatório copiado para a área de transferência!');
+            })
+            .catch(err => {
+                console.error('Erro ao copiar o relatório: ', err);
+            });
+    }
+</script>
+
+</body>
+</html>
