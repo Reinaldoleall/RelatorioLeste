@@ -18,7 +18,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('#');
+            background-image: url('crc/img/00.gif'); /* Adicione um URL válido aqui */
             background-size: cover;
             background-repeat: no-repeat;
         }
@@ -50,23 +50,34 @@
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
+            position: relative;
+        }
+
+        .menu .hamburger {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .menu .hamburger:hover {
+            background-color: #0056b3;
         }
 
         .menu .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
             display: none;
+            flex-direction: column;
             position: absolute;
+            top: 50px;
             background-color: #f9f9f9;
             min-width: 160px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
         }
 
-        .dropdown-content a {
+        .menu .dropdown a {
             color: black;
             padding: 12px 16px;
             text-decoration: none;
@@ -74,30 +85,8 @@
             transition: background-color 0.3s;
         }
 
-        .dropdown-content a:hover {
+        .menu .dropdown a:hover {
             background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown:hover .dropbtn {
-            background-color: #3e8e41;
-        }
-
-        .menu .dropbtn {
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 5px 5px 0 0;
-            margin: 0 10px;
-            transition: background-color 0.3s;
-        }
-
-        .menu .dropbtn:hover {
-            background-color: #0056b3;
         }
 
         .content {
@@ -109,6 +98,28 @@
         .content.active {
             display: block;
         }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        .show-dropdown {
+            display: flex !important;
+        }
     </style>
 </head>
 <body>
@@ -117,63 +128,62 @@
         <p>Clique no menu abaixo para acessar as diferentes seções.</p>
         
         <div class="menu">
+            <div class="hamburger">☰ Menu</div>
             <div class="dropdown">
-                <a href="#" class="dropbtn">Opções</a>
-                <div class="dropdown-content">
-                    <a href="#informacoes_da_semana">Informações da Semana</a>
-                    <a href="#deposito_das_redes">Depósito das Redes</a>
-                    <a href="#introducao_de_produtos">Introdução de Produtos</a>
-                    <a href="#prestacao_de_contas">Prestação de Contas</a>
-                </div>
+                <a href="#informacoes_da_semana">Informações da Semana</a>
+                <a href="#deposito_das_redes">Depósito das Redes</a>
+                <a href="#introducao_de_produtos">Introdução de Produtos</a>
+                <a href="#prestacao_de_contas">Prestação de Contas</a>
             </div>
         </div>
 
         <div id="informacoes_da_semana" class="content active">
             <h2>Informações da Semana</h2>
-            <a href="informacoes_da_semana.html">Iniciar</a>
+            <a href="informacoes_da_semana.html" class="button">Iniciar Relatório</a>
         </div>
 
         <div id="deposito_das_redes" class="content">
             <h2>Depósito das Redes</h2>
-            <a href="deposito_das_redes.html">Iniciar</a>
+            <a href="deposito_das_redes.html" class="button">Iniciar Relatório</a>
         </div>
 
         <div id="introducao_de_produtos" class="content">
             <h2>Introdução de Produtos</h2>
-            <a href="introducao_de_produtos.html">Iniciar</a>
+            <a href="introducao_de_produtos.html" class="button">Iniciar Relatório</a>
         </div>
 
         <div id="prestacao_de_contas" class="content">
             <h2>Prestação de Contas</h2>
-            <a href="prestacao_de_contas.html">Iniciar</a>
+            <a href="prestacao_de_contas.html" class="button">Iniciar Relatório</a>
         </div>
-
     </div>
 
     <script>
-        const dropdown = document.querySelector('.dropdown');
-        const dropdownToggle = dropdown.querySelector('.dropbtn');
-        const dropdownContent = dropdown.querySelector('.dropdown-content');
-        const dropdownLinks = dropdown.querySelectorAll('.dropdown-content a');
-        const contentSections = document.querySelectorAll('.content');
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownLinks = dropdown.querySelectorAll('a');
+            const contentSections = document.querySelectorAll('.content');
 
-        dropdownToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
-        });
-
-        dropdownLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = this.getAttribute('href').substring(1);
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
-                    if (section.id === target) {
-                        section.classList.add('active');
-                    }
+            if (hamburger && dropdown) {
+                hamburger.addEventListener('click', function() {
+                    dropdown.classList.toggle('show-dropdown');
                 });
-                dropdownContent.style.display = 'none'; // Fechar o dropdown após selecionar uma opção
-            });
+
+                dropdownLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const target = this.getAttribute('href').substring(1);
+                        contentSections.forEach(section => {
+                            section.classList.remove('active');
+                            if (section.id === target) {
+                                section.classList.add('active');
+                            }
+                        });
+                        dropdown.classList.remove('show-dropdown');
+                    });
+                });
+            }
         });
     </script>
 </body>
