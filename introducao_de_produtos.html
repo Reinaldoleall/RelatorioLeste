@@ -56,12 +56,49 @@
             white-space: pre-wrap;
             text-align: left;
         }
+        #photo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .photo-input {
+            display: none;
+        }
+        .photo-label {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+        }
+        .photo-label img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        #share-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        #share-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: blue;">Formulário de Introdução de Produtos da Concorrência</h1>
-        <form id="productForm">
+        <h1 style="color: blue;">Formulário de Introdução de Produtos</h1>
+        <p style="color: blue;">1 - Preencha as informações do produto, gere o relatório, copie e envie no grupo respectivo. <br>
+        2 - Adicione as fotos necessárias e compartilhe no grupo.</p>        <form id="productForm">
             <div class="form-group">
                 <label for="revenda">Revenda:</label>
                 <input type="text" id="revenda" name="revenda" required>
@@ -102,6 +139,25 @@
         <button type="button" onclick="copyReport()">Copiar Relatório</button>
     </div>
 
+    <div class="container">
+        <h1>Adicionar e Compartilhar Fotos</h1>
+        <div id="photo-container">
+            <input type="file" accept="image/*" class="photo-input" id="photo-input-1">
+            <label for="photo-input-1" class="photo-label"></label>
+            <input type="file" accept="image/*" class="photo-input" id="photo-input-2">
+            <label for="photo-input-2" class="photo-label"></label>
+            <input type="file" accept="image/*" class="photo-input" id="photo-input-3">
+            <label for="photo-input-3" class="photo-label"></label>
+            <input type="file" accept="image/*" class="photo-input" id="photo-input-4">
+            <label for="photo-input-4" class="photo-label"></label>
+            <input type="file" accept="image/*" class="photo-input" id="photo-input-5">
+            <label for="photo-input-5" class="photo-label"></label>
+            <input type="file" accept="image/*" class="photo-input" id="photo-input-6">
+            <label for="photo-input-6" class="photo-label"></label>
+        </div>
+        <button id="share-button">Compartilhar Fotos</button>
+    </div>
+
     <script>
         function generateReport() {
             const revenda = document.getElementById('revenda').value;
@@ -135,6 +191,52 @@ ${especificacoes.split('\n').map(item => `    • ${item}`).join('\n')}
                 alert('Relatório copiado para a área de transferência!');
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const photoInputs = document.querySelectorAll('.photo-input');
+            const shareButton = document.getElementById('share-button');
+            const photoContainer = document.getElementById('photo-container');
+
+            // Handle image preview
+            photoInputs.forEach((input, index) => {
+                const label = document.querySelector(`label[for="photo-input-${index + 1}"]`);
+                input.addEventListener('change', function () {
+                    const file = input.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            label.innerHTML = '';
+                            label.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+
+            shareButton.addEventListener('click', function () {
+                const files = Array.from(photoInputs).map(input => input.files[0]).filter(file => file);
+                if (files.length >= 4 && files.length <= 6) {
+                    if (navigator.share) {
+                        const shareData = {
+                            files: files,
+                            title: 'Minhas Fotos',
+                            text: '',
+                        };
+                        navigator.share(shareData).then(() => {
+                            console.log('Compartilhamento concluído com sucesso');
+                        }).catch(error => {
+                            console.error('Erro no compartilhamento:', error);
+                        });
+                    } else {
+                        alert('Compartilhamento não suportado neste navegador.');
+                    }
+                } else {
+                    alert('Por favor, adicione entre 4 a 6 fotos.');
+                }
+            });
+        });
     </script>
 </body>
 </html>
