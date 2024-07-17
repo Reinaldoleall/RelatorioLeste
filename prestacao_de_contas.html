@@ -36,7 +36,7 @@
             margin-bottom: 5px;
             color: #333;
         }
-        input[type="text"], input[type="date"] {
+        input[type="text"], input[type="date"], input[type="file"] {
             width: calc(100% - 10px);
             padding: 8px;
             margin-bottom: 10px;
@@ -73,6 +73,21 @@
         .generated-report p {
             color: #fff;
         }
+        .photo-label {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+        }
+        .photo-label img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -104,6 +119,16 @@
             <button onclick="copiarRelatorio()">Copiar Relatório</button>
         </div>
     </div>
+
+    <div class="container">
+        <h1>Adicionar e Compartilhar Foto</h1>
+        <div id="photo-container">
+            <input type="file" accept="image/*" class="photo-input" id="photo-input">
+            <label for="photo-input" class="photo-label"></label>
+        </div>
+        <button id="share-button">Compartilhar Foto</button>
+    </div>
+
     <script>
         function formatarData(data) {
             const partes = data.split("-");
@@ -130,6 +155,48 @@
                 .then(() => alert('Relatório copiado para a área de transferência!'))
                 .catch((error) => console.error('Erro ao copiar relatório:', error));
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const photoInput = document.getElementById('photo-input');
+            const shareButton = document.getElementById('share-button');
+            const photoLabel = document.querySelector(`label[for="photo-input"]`);
+
+            photoInput.addEventListener('change', function () {
+                const file = photoInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        photoLabel.innerHTML = '';
+                        photoLabel.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            shareButton.addEventListener('click', function () {
+                const file = photoInput.files[0];
+                if (file) {
+                    if (navigator.share) {
+                        const shareData = {
+                            files: [file],
+                            title: 'Minha Foto',
+                            text: '',
+                        };
+                        navigator.share(shareData).then(() => {
+                            console.log('Compartilhamento concluído com sucesso');
+                        }).catch(error => {
+                            console.error('Erro no compartilhamento:', error);
+                        });
+                    } else {
+                        alert('Compartilhamento não suportado neste navegador.');
+                    }
+                } else {
+                    alert('Por favor, adicione uma foto.');
+                }
+            });
+        });
     </script>
 </body>
 </html>
