@@ -6,7 +6,7 @@
     <title>Formulário de Introdução de Produtos da Concorrência</title>
     <style>
         body {
-                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f0f0;
             margin: 20px;
             padding: 0;
@@ -93,13 +93,21 @@
         #share-button:hover {
             background-color: #218838;
         }
+        h1 {
+            color: #5dade2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        p {
+            color: #5dade2;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: blue;">Formulário de Introdução de Produtos</h1>
-        <p style="color: blue;">1 - Preencha as informações do produto, gere o relatório, copie e envie no grupo respectivo. <br>
-        2 - Adicione as fotos necessárias e compartilhe no grupo.</p>        <form id="productForm">
+        <h1>Formulário de Introdução de Produtos</h1>
+        <p>1 - Preencha as informações do produto, gere o relatório, copie e envie no grupo respectivo. <br>
+        2 - Adicione as fotos necessárias e compartilhe no grupo.</p>        
+        <form id="productForm">
             <div class="form-group">
                 <label for="revenda">Revenda:</label>
                 <input type="text" id="revenda" name="revenda" required>
