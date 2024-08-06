@@ -178,7 +178,7 @@
             const consultor = document.getElementById('consultor').value || '*Não especificado*';
             const regional = document.getElementById('regional').value || '*Não especificado*';
             const cidade = document.getElementById('cidade').value || '*Não especificado*';
-            const periodo = document.getElementById('periodo').value || '*Não especificado*';
+            const periodo = document.getElementById('periodo').value || '* / /2024*';
 
             const panasonic1 = document.getElementById('panasonic1').value || '*Não especificado*';
             const panasonic1Preco = document.getElementById('panasonic1-preco').value || '*0*';
@@ -191,7 +191,7 @@
             const concorrencia2Preco = document.getElementById('concorrencia2-preco').value || '*0*';
 
             const report = `
-*Relatório da Semana:*
+*Informações da Semana:*
 
 *Revenda:* ${revenda}
 *Filial:* ${filial}
@@ -200,17 +200,17 @@
 *Cidade:* ${cidade}
 
 *Panasonic:*
-🔹 ${panasonic1}: - R$${panasonic1Preco}
-🔹 ${panasonic2}: - R$${panasonic2Preco}
+🔹 ${panasonic1}  por R$${panasonic1Preco}
+🔹 ${panasonic2}  por R$${panasonic2Preco}
 
 *Concorrência:*
-🔹 ${concorrencia1}: - R$${concorrencia1Preco}
-🔹 ${concorrencia2}: - R$${concorrencia2Preco}
+🔹 ${concorrencia1}  por R$${concorrencia1Preco}
+🔹 ${concorrencia2}  por R$${concorrencia2Preco}
 
 *Coordenador:* Vanderson
 *Supervisor:* Stephanie
 *Consultor:* ${consultor}
-*Período:* ${periodo}
+*Data:* ${periodo}
             `;
 
             const generatedReport = document.getElementById('generatedReport');
