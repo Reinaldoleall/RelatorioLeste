@@ -5,30 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Formulário de Avaria PDV</title>
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     body {
         text-align: left;
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #f0f0f0;
         padding: 5px;
+        background-image: url('crc/img/00.gif'); /* Adicione um URL válido aqui */
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
+
     .container {
         max-width: 600px;
-        margin: 0 auto;
-        background-color: #fff;
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
     h2 {
-        color: #333;
+        color: #007bff; /* Azul mais intenso */
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     }
+
     .form-group {
         margin-bottom: 20px;
     }
+
     label {
         font-weight: bold;
         display: block;
+        color: #333;
     }
+
     .form-control {
         width: 100%;
         padding: 8px;
@@ -36,24 +57,30 @@
         border: 1px solid #ccc;
         border-radius: 4px;
     }
+
     .btn {
         width: 100%;
         padding: 10px;
-        background-color: #007bff;
+        background-color: #007bff; /* Azul mais intenso */
         color: #fff;
         border: none;
         border-radius: 4px;
         font-size: 16px;
         cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
     }
+
     .btn:hover {
-        background-color: #0056b3;
+        background-color: #0056b3; /* Azul escuro */
+        transform: scale(1.05);
     }
 </style>
 </head>
 <body>
 <div class="container">
-    <left><h2>Formulário de Avaria</h2>
+  <br>
+  <br>
+    <h2>Formulário de Avaria</h2>
     <div class="form-group">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" class="form-control" value="">
@@ -126,11 +153,11 @@
             <option value="nao">Não</option>
         </select>
     </div>
-    <button class="btn" onclick="gerarRelatorio()">Gerar Relatório</button>
+    <button class="btn" onclick="compartilharRelatorio()">Compartilhar Relatório</button>
 </div>
 
 <script>
-    function gerarRelatorio() {
+    function compartilharRelatorio() {
         var nome = document.getElementById('nome').value;
         var rede = document.getElementById('rede').value;
         var filial = document.getElementById('filial').value;
@@ -142,29 +169,24 @@
         var reportadoStage = document.getElementById('reportado-stage').value;
 
         var relatorio = `
-        *AVARIA ENCONTRADA NO PDV*
-            
-  *Nome:* ${nome}
-  *Rede:* ${rede}
-  *Filial:* ${filial}
-  *Produto:* ${produto}
-  *N.S.:* ${ns}
-  *Gerente:* ${gerente}
-            
-  *Avaria:* ${avaria}
-  *Foi reportada ao PDS?:* ${reportadoPDS === 'sim' ? 'Sim' : 'Não'}
-  *Foi reportado no Stage?:* ${reportadoStage === 'sim' ? 'Sim' : 'Não'}
+*AVARIA ENCONTRADA NO PDV*
+
+*Nome:* ${nome}
+*Rede:* ${rede}
+*Filial:* ${filial}
+*Produto:* ${produto}
+*N.S.:* ${ns}
+*Gerente:* ${gerente}
+
+*Avaria:* ${avaria}
+*Foi reportada ao PDS?:* ${reportadoPDS === 'sim' ? 'Sim' : 'Não'}
+*Foi reportado no Stage?:* ${reportadoStage === 'sim' ? 'Sim' : 'Não'}
         `;
 
-        console.log(relatorio);
+        var encodedRelatorio = encodeURIComponent(relatorio);
+        var url = `https://api.whatsapp.com/send?text=${encodedRelatorio}`;
 
-        navigator.clipboard.writeText(relatorio)
-            .then(() => {
-                alert('Relatório copiado para a área de transferência!');
-            })
-            .catch(err => {
-                console.error('Erro ao copiar o relatório: ', err);
-            });
+        window.open(url, '_blank');
     }
 </script>
 
