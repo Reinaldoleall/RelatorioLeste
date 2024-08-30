@@ -112,8 +112,8 @@
     <div class="container">
         <h1>Informações da Semana</h1>
         <p style="color: blue;">
-1. Preencha as informações, clique em "Gerar Relatório". Logo em seguida, copie a informação e cole no grupo respectivo.<br>
-2. Adicione ou remova as fotos e clique em "Compartilhar". Selecione a opção "Compartilhar no WhatsApp" e envie as fotos.
+1. Preencha as informações, clique em "Gerar Relatório". Logo em seguida, clique em "Compartilhar no WhatsApp".<br>
+2. Adicione ou remova as fotos e clique em "Compartilhar Fotos". Selecione a opção "Compartilhar no WhatsApp" e envie as fotos.
 </p>
         <div>
             <label for="revenda">Revenda:</label>
@@ -128,8 +128,8 @@
             <input type="text" id="regional" placeholder="Digite a regional">
             <label for="cidade">Cidade:</label>
             <input type="text" id="cidade" placeholder="Digite a cidade">
-            <label for="periodo">Data:</label>
-            <input type="text" id="periodo" placeholder="Digite o período">
+            <label for="periodo" style="display: none;">Data:</label>
+            <input type="text" id="periodo" placeholder="Digite o período" style="display: none;">
             <label for="panasonic1">Panasonic Produto 1:</label>
             <input type="text" id="panasonic1" placeholder="Digite o nome do produto">
             <input type="text" id="panasonic1-preco" placeholder="Digite o valor do produto">
@@ -147,7 +147,7 @@
         <div>
             <h2 class="section-title">Relatório Gerado:</h2>
             <div id="generatedReport" class="generated-report"></div>
-            <button onclick="copyReport()">Copiar Relatório</button>
+            <button id="share-button" onclick="shareReport()">Compartilhar no WhatsApp</button>
         </div>
     </div>
 
@@ -167,7 +167,7 @@
             <input type="file" accept="image/*" class="photo-input" id="photo-input-6">
             <label for="photo-input-6" class="photo-label"></label>
         </div>
-        <button id="share-button">Compartilhar Fotos</button>
+        <button id="share-photos-button">Compartilhar Fotos</button>
     </div>
 
     <script>
@@ -178,7 +178,7 @@
             const consultor = document.getElementById('consultor').value || '*Não especificado*';
             const regional = document.getElementById('regional').value || '*Não especificado*';
             const cidade = document.getElementById('cidade').value || '*Não especificado*';
-            const periodo = document.getElementById('periodo').value || '* / /2024*';
+            const periodo = '* ' + new Date().toLocaleDateString('pt-BR') + '*';
 
             const panasonic1 = document.getElementById('panasonic1').value || '*Não especificado*';
             const panasonic1Preco = document.getElementById('panasonic1-preco').value || '*0*';
@@ -187,7 +187,7 @@
 
             const concorrencia1 = document.getElementById('concorrencia1').value || '*Não especificado*';
             const concorrencia1Preco = document.getElementById('concorrencia1-preco').value || '*0*';
-            const concorrencia2 = document.getElementById('concorrencia2').value || '*Não especificado*';
+                        const concorrencia2 = document.getElementById('concorrencia2').value || '*Não especificado*';
             const concorrencia2Preco = document.getElementById('concorrencia2-preco').value || '*0*';
 
             const report = `
@@ -198,85 +198,52 @@
 *ID:* ${id}
 *Regional:* ${regional}
 *Cidade:* ${cidade}
+*Data:* ${periodo}
 
 *Panasonic:*
-🔹 ${panasonic1}  
-por R$${panasonic1Preco}
-🔹 ${panasonic2}  
-por R$${panasonic2Preco}
+🔹 ${panasonic1} por R$ ${panasonic1Preco}
+🔹 ${panasonic2} por R$ ${panasonic2Preco}
 
 *Concorrência:*
-🔹 ${concorrencia1}  
-por R$${concorrencia1Preco}
-🔹 ${concorrencia2}  
-por R$${concorrencia2Preco}
-
+🔹 ${concorrencia1} por R$ ${concorrencia1Preco}
+🔹 ${concorrencia2} por R$ ${concorrencia2Preco}
+            
 *Coordenador:* Vanderson
 *Supervisor:* Stephanie
 *Consultor:* ${consultor}
 *Data:* ${periodo}
-            `;
+`;
 
-            const generatedReport = document.getElementById('generatedReport');
-            generatedReport.innerHTML = report;
+            document.getElementById('generatedReport').textContent = report;
         }
 
-        function copyReport() {
-            const reportText = document.getElementById('generatedReport').innerText || '';
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = reportText;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
-            alert('Relatório copiado para a área de transferência!');
+        function shareReport() {
+            const reportContent = document.getElementById('generatedReport').textContent;
+            const encodedReport = encodeURIComponent(reportContent);
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedReport}`;
+            window.open(whatsappUrl, '_blank');
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const photoInputs = document.querySelectorAll('.photo-input');
-            const shareButton = document.getElementById('share-button');
-            const photoContainer = document.getElementById('photo-container');
-
-            // Handle image preview
-            photoInputs.forEach((input, index) => {
-                const label = document.querySelector(`label[for="photo-input-${index + 1}"]`);
-                input.addEventListener('change', function () {
-                    const file = input.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            const img = document.createElement('img');
-                            img.src = e.target.result;
-                            label.innerHTML = '';
-                            label.appendChild(img);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            });
-
-            shareButton.addEventListener('click', function () {
-                const files = Array.from(photoInputs).map(input => input.files[0]).filter(file => file);
-                if (files.length >= 4 && files.length <= 6) {
-                    if (navigator.share) {
-                        const shareData = {
-                            files: files,
-                            title: 'Minhas Fotos',
-                            text: '',
-                        };
-                        navigator.share(shareData).then(() => {
-                            console.log('Compartilhamento concluído com sucesso');
-                        }).catch(error => {
-                            console.error('Erro no compartilhamento:', error);
-                        });
-                    } else {
-                        alert('Compartilhamento não suportado neste navegador.');
-                    }
-                } else {
-                    alert('Por favor, adicione entre 4 a 6 fotos.');
+        document.getElementById('share-photos-button').addEventListener('click', function() {
+            const files = document.querySelectorAll('.photo-input');
+            let photoUrls = [];
+            files.forEach(fileInput => {
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageUrl = e.target.result;
+                        photoUrls.push(imageUrl);
+                        if (photoUrls.length === files.length) {
+                            const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent('Fotos:\n' + photoUrls.join('\n'))}`;
+                            window.open(shareUrl, '_blank');
+                        }
+                    };
+                    reader.readAsDataURL(file);
                 }
             });
         });
     </script>
 </body>
 </html>
+
