@@ -24,7 +24,7 @@
         label {
             display: block;
             margin-bottom: 5px;
-            text-align: left;
+            color: #000; /* Texto preto */
         }
         input[type="text"], input[type="date"] {
             width: 100%;
@@ -94,11 +94,11 @@
             background-color: #218838;
         }
         h1 {
-            color: #5dade2;
+            color: #4169E1; /* Azul Panasonic */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         p {
-            color: #5dade2;
+            color: #000; /* Texto preto */
         }
     </style>
 </head>
@@ -145,7 +145,7 @@
         <div class="report" id="report">
             <!-- Relatório gerado será exibido aqui -->
         </div>
-        <button type="button" onclick="copyReport()">Copiar Relatório</button>
+        <button type="button" onclick="shareReport()">Compartilhar Relatório pelo WhatsApp</button>
     </div>
 
     <div class="container">
@@ -179,7 +179,7 @@
             const especificacoes = document.getElementById('especificacoes').value;
 
             const report = `
-*Introdução de produtos da concorrência*
+*Introdução de produtos:*
 *Revenda:* ${revenda}
 *Filial:* ${filial}
 *Marca:* ${marca}
@@ -194,11 +194,11 @@ ${especificacoes.split('\n').map(item => `    • ${item}`).join('\n')}
             document.getElementById('report').textContent = report;
         }
 
-        function copyReport() {
+        function shareReport() {
             const report = document.getElementById('report').textContent;
-            navigator.clipboard.writeText(report).then(() => {
-                alert('Relatório copiado para a área de transferência!');
-            });
+            const encodedReport = encodeURIComponent(report);
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedReport}`;
+            window.open(whatsappUrl, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -249,3 +249,4 @@ ${especificacoes.split('\n').map(item => `    • ${item}`).join('\n')}
     </script>
 </body>
 </html>
+
