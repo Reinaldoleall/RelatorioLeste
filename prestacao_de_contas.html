@@ -6,7 +6,7 @@
     <title>Prestação de Contas</title>
     <style>
         body {
-                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f0f0;
             color: #fff;
             margin: 0;
@@ -19,7 +19,7 @@
         .container {
             width: 90%;
             max-width: 600px;
-            background-color:             color: #007bff; /* Azul mais intenso */
+            background-color: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -116,7 +116,7 @@
         <div class="generated-report" id="reportContent">
             <h2>Relatório Gerado</h2>
             <p id="reportText"></p>
-            <button onclick="copiarRelatorio()">Copiar Relatório</button>
+            <button onclick="compartilharRelatorio()">Compartilhar pelo WhatsApp</button>
         </div>
     </div>
 
@@ -149,11 +149,11 @@
             document.getElementById('reportContent').style.display = 'block';
         }
 
-        function copiarRelatorio() {
+        function compartilharRelatorio() {
             const reportText = document.getElementById('reportText').innerText;
-            navigator.clipboard.writeText(reportText)
-                .then(() => alert('Relatório copiado para a área de transferência!'))
-                .catch((error) => console.error('Erro ao copiar relatório:', error));
+            const mensagem = `*Prestação de Contas:*\n\n${reportText}`;
+            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', function () {
